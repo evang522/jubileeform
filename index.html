@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang='en'>
+  <head>
+    <title>Jubilee's Test Site</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel='stylesheet' href='styles.css' type='text/css'>
+  </head>
+  <body>
+    <header><h1>Jubilee Volunteer Program</h1></header>
+    <section class='volunteer-info'>
+      To receive more information about the resident volunteer program or to begin the application process, please call, write, or submit the form below. (We do not have a program for day or weekend volunteering.)
+      Here's how to contact Robbie Buller (Volunteer Coordinator):
+      <div class='breadcrumb'><b>Call</b>:  706-783-5131, ext. 104  Please leave a message with your name and number and a good time to call you back.</div>
+      <div class='breadcrumb'><b>Write:</b>  PO Box 68, Comer, GA, 30629. </div>
+      Provide us with some information about yourself and the volunteer coordinator will be in touch with you: 
+     (We prefer to have voice conversation to initiate the application process.)
+     <br>
+     <br>
+     <br>
+     <br>
+     <div class='spinner-container'>
+      <div class="sk-cube-grid">
+        <div class="sk-cube sk-cube1"></div>
+        <div class="sk-cube sk-cube2"></div>
+        <div class="sk-cube sk-cube3"></div>
+        <div class="sk-cube sk-cube4"></div>
+        <div class="sk-cube sk-cube5"></div>
+        <div class="sk-cube sk-cube6"></div>
+        <div class="sk-cube sk-cube7"></div>
+        <div class="sk-cube sk-cube8"></div>
+        <div class="sk-cube sk-cube9"></div>
+      </div>
+     </div>
+    </section>
+    <form class='contact-form'>
+      <label for='name'>Name</label>
+      <input class='form-control' id='name'>
+      <label for='address'>Address</label>
+      <input class='form-control' id='address'>
+      <label for='phone'>Phone</label>
+      <input class='form-control' id='phone'>
+      <label for='email'>Email Address</label>
+      <input class='form-control' id='email'>
+      <label for='age'>Age</label>
+      <input class='form-control' id='age'>
+      <label  for='is-student'> Are you a student?</label>
+      <input type='checkbox' id='is-student'>
+      <label for='schoolattended'>If so, what school do you attend?</label>
+      <input class='form-control' id='schoolattended'>
+      <label  for='isemployed'>Are you employed?</label>
+      <input  type='checkbox' id='isemployed'>
+      <label for='job'>If so, where do you work?</label>
+      <input class='form-control' id='job'>
+      <label for='volunteerterm'>Which Volunteer Term are you interested in?</label>
+      <input class='form-control' id='volunteerterm'>
+      <br>
+      <input type='submit' class='btn btn-primary'>
+      <br>
+      <br>
+      <div class='breadcrumb status-container'><b>Form Status:</b><div class='status-text'>Ok So Far!</div></div>
+    </form>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
+      <script type="text/javascript">
+        // Initiate EmailJs
+        (function () {
+          emailjs.init("user_eUTrt9vEB79x1mr8D98F1");
+        })();
+      </script>
+      <script>
+        const emailModule = {
+          sendMail : function () {
+            $('.spinner-container').css('display','block');
+            emailjs.send('infoemailer','template_uOQcCme2',
+           {  name: document.querySelector('#name').value,
+              physicaladdress:document.querySelector('#address').value,
+              phone: document.querySelector('#phone').value,
+              email:document.querySelector('#email').value,
+              age:document.querySelector('#age').value,
+              is_a_student:$('#is-student').is(':checked') ? 'Yes': 'No', 
+              schoolattended:document.querySelector('#schoolattended').value,
+              is_employed:$('#isemployed').is(':checked') ? 'Yes':'No',
+              where_employed:document.querySelector('#job').value,
+              volunteerterm:document.querySelector('#volunteerterm').value
+           })
+           .then(response => {
+             $('.status-container').css({'background-color':'green', 'color':'white'});
+             $('.status-text').text('Form Submitted Successfully! Thank you!')
+             $('.spinner-container').css('display','none');
+           })
+           .catch(err => {
+            $('.spinner-container').css('display','none');
+             $('.status-container').css({'background-color':'red', 'color':'white'});
+             $('.status-text').text('There was a problem sending your Form. Please check your internet connection and try again.');
+           })
+          }
+        }
+
+        $('.contact-form').on('submit', (e) => {
+          e.preventDefault();
+
+          let validateFormsfields = {
+              name: document.querySelector('#name').value,
+              physicaladdress:document.querySelector('#address').value,
+              phone: document.querySelector('#phone').value,
+              email:document.querySelector('#email').value,
+              age:document.querySelector('#age').value,
+              volunteerterm:document.querySelector('#volunteerterm').value
+          }
+
+          for (let k in validateFormsfields) {
+            if (!validateFormsfields[k]) {
+              $('.status-container').css({'background-color':'red', 'color':'white'});
+              $('.status-text').text('Missing required fields!');
+              return;
+            }
+          }
+
+          emailModule.sendMail();
+        })
+
+
+      </script>
+  </body>
+</html>
